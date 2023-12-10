@@ -1,0 +1,83 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+#define sza(x) ((int)x.size())
+#define all(a) (a).begin(), (a).end()
+#define pb push_back
+#define forn(i, n) for (int i = 0; i < int(n); i++)
+#define fi first
+#define se second
+
+using ld = long double;
+using ll = long long;
+using str = string;
+using pii = pair<int, int>;
+using pll = pair<ll, ll>;
+using vi = vector<int>;
+using vll = vector<ll>;
+const int MAX_N = 1e5 + 5;
+const ll MOD = 1e9 + 7; // 998244353
+const ll INF = 1e9;
+const ld EPS = 1e-9;
+
+#include <ext/pb_ds/assoc_container.hpp>
+using namespace __gnu_pbds;
+typedef tree<int, null_type, less<int>, rb_tree_tag, tree_order_statistics_node_update> ordered_set;
+typedef tree<pii, null_type, less<pii>, rb_tree_tag, tree_order_statistics_node_update> ordered_multiset;
+
+mt19937_64 rng(chrono::steady_clock::now().time_since_epoch().count());
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+
+bool multiTest = 0;
+
+vll colors;
+vector<vll> adj;
+
+void dfs(ll node, ll color){
+    if (colors[node] != -1){
+        if (colors[node] != color){
+            cout << "IMPOSSIBLE";
+            exit(0);
+        }
+        return;
+    }
+    colors[node] = color;
+    for (ll x : adj[node]){
+        dfs(x, (color+1)%2);
+    }
+}
+
+void solve(int tt) {
+    ll n, m; cin >> n >> m;
+    colors = vll(n, -1);
+    adj.resize(n);
+    forn(i, m){
+        ll a, b; cin >> a >> b;
+        a--; b--;
+        adj[a].pb(b);
+        adj[b].pb(a);
+    }
+    forn(i, n){
+        if (colors[i] == -1)
+            dfs(i, 0);
+    }
+    forn(i, n)
+        cout << colors[i] +1<< ' ';
+}
+
+signed main() {
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
+    // cout.precision(20);
+
+    int t = 1;
+    if (multiTest)
+        cin >> t;
+    for (int ii = 0; ii < t; ii++)
+    {
+        solve(ii);
+    }
+}
